@@ -29,11 +29,33 @@ $.extend( proto, {
 		}
 	},
 
-	_renderItem: function( ul, item) {
-		return $( "<li></li>" )
-			.data( "item.autocomplete", item )
-			.append( $( "<a></a>" )[ this.options.html ? "html" : "text" ]( item.label ) )
-			.appendTo( ul );
+	_renderMenu: function( ul, items ) {
+		var that = this,
+				newItem = { header: "Suggested" };
+
+		// Insert our "Suggested" label to the top of the menu
+		items.splice(0, 1, newItem);
+
+		$.each( items, function( index, item ) {
+			that._renderItemData( ul, item );
+		});
+	},
+
+
+	_renderItem: function (ul, item) {
+		var newListItem = $("<li>");
+		
+		// If this is our header item, render it differently
+		if (item.header) {
+			newListItem.text(item.header).addClass("ui-state-disabled");
+		} else {
+			newListItem.data("item.autocomplete", item)
+					.append($("<a></a>")[this.options.html ? "html" : "text"](item.label));
+		}
+
+		newListItem.appendTo(ul);
+
+		return newListItem;
 	}
 });
 
