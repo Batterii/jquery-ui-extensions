@@ -31,16 +31,19 @@ $.extend( proto, {
 
 	_renderMenu: function( ul, items ) {
 		var that = this,
-				newItem = { header: "Suggested" };
+				newItem;
 
-		// Insert our "Suggested" label to the top of the menu
-		items.splice(0, 1, newItem);
+		if (this.options.header) {
+			newItem = { header: this.options.header };
+
+			// Insert our "Suggested" label to the top of the menu
+			items.splice(0, 1, newItem);
+		}
 
 		$.each( items, function( index, item ) {
 			that._renderItemData( ul, item );
 		});
 	},
-
 
 	_renderItem: function (ul, item) {
 		var newListItem = $("<li>");
@@ -56,6 +59,48 @@ $.extend( proto, {
 		newListItem.appendTo(ul);
 
 		return newListItem;
+	},
+
+	// Override so we can change the position of the menu
+	_suggest: function( items ) {
+		var ul = this.menu.element.empty();
+		this._renderMenu( ul, items );
+		this.isNewMenu = true;
+		this.menu.refresh();
+
+		// size and position menu
+		ul.show();
+		this._resizeMenu();
+		ul.position( $.extend({
+			of: this.options.positionOf ? this.options.positionOf : this.element
+			//of: this.element
+		}, this.options.position ) );
+
+		if ( this.options.autoFocus ) {
+			this.menu.next();
+		}
+	},
+
+	// Override so we can make the menu the same width as its container
+	_resizeMenu: function() {
+		var ul = this.menu.element,
+				refElement = this.options.positionOf;
+
+		if (refElement) {
+			refElement = $(refElement);
+			if (!refElement.length) {
+				refElement = this.element;
+			}
+		} else {
+			refElement = this.element;
+		}
+
+		ul.outerWidth( Math.max(
+				// Firefox wraps long text (possibly a rounding bug)
+				// so we add 1px to avoid the wrapping (#7513)
+				ul.width( "" ).outerWidth() + 1,
+				refElement.outerWidth()
+		) );
 	}
 });
 
