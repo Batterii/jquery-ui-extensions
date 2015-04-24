@@ -37,7 +37,7 @@ $.extend( proto, {
 			newItem = { header: this.options.header };
 
 			// Insert our "Suggested" label to the top of the menu
-			items.splice(0, 1, newItem);
+			items.splice(0, 0, newItem);
 		}
 
 		$.each( items, function( index, item ) {
@@ -54,6 +54,10 @@ $.extend( proto, {
 		} else {
 			newListItem.data("item.autocomplete", item)
 					.append($("<a></a>")[this.options.html ? "html" : "text"](item.label));
+
+			if (item.selected) {
+				newListItem.addClass('selected');
+			}
 		}
 
 		newListItem.appendTo(ul);
