@@ -57,6 +57,7 @@ $.extend( proto, {
 
 			if (item.selected) {
 				newListItem.addClass('selected');
+				newListItem.append($("<span class='selected-checkmark small icon-checkmark right'></span>"));
 			}
 		}
 
