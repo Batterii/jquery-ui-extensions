@@ -52,13 +52,15 @@ $.extend( proto, {
 		if (item.header) {
 			newListItem.text(item.header).addClass("ui-state-disabled");
 		} else {
-			newListItem.data("item.autocomplete", item)
-					.append($("<a></a>")[this.options.html ? "html" : "text"](item.label));
+			var $a = $("<a></a>")[this.options.html ? "html" : "text"](item.label);
 
 			if (item.selected) {
 				newListItem.addClass('selected');
-				newListItem.append($("<span class='selected-checkmark small icon-checkmark right'></span>"));
+				$a.append($("<span class='selected-checkmark small icon-checkmark right'></span>"));
 			}
+
+			newListItem.data("item.autocomplete", item).append($a);
+
 		}
 
 		newListItem.appendTo(ul);
