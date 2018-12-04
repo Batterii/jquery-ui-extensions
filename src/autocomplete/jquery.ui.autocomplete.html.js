@@ -56,7 +56,7 @@ $.extend( proto, {
 
 			if (item.selected) {
 				newListItem.addClass('selected');
-				$a.append($("<span class='selected-checkmark small icon-checkmark right'></span>"));
+				$a.append($("<span class='selected-checkmark small icon-checkmark'></span>"));
 			}
 
 			newListItem.data("item.autocomplete", item).append($a);
